@@ -13,7 +13,7 @@ struct APIClient {
     var ipAddress: String
     
     private lazy var baseURL: URL = {
-        let URLString = "https://\(self.ipAddress)/"
+        let URLString = "https://\(self.ipAddress):1925"
         return URL(string: URLString)!
     }()
     
@@ -29,6 +29,7 @@ struct APIClient {
         let urlRequest = URLRequest(url: baseURL.appendingPathComponent(APIRequest.systemNamePath))
         var encodedURLRequest = urlRequest.encode(with: nil)
         encodedURLRequest.setValue("application/json", forHTTPHeaderField: "Accept")
+        print(encodedURLRequest)
         session.dataTask(with: encodedURLRequest, completionHandler: { data, response, error in
             guard
                 let httpResponse = response as? HTTPURLResponse,

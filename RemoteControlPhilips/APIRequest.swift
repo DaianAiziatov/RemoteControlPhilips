@@ -10,6 +10,6 @@ import Foundation
 
 struct APIRequest {
     
-    static let systemNamePath = ":1925/1/system/name"
+    static let systemNamePath = "/1/system/name"
     
 }
