@@ -44,7 +44,7 @@ class ViewController: UIViewController, AlertDisplayable {
                             DispatchQueue.main.async {
                                 let title = "Success"
                                 let action = UIAlertAction(title: "Ok", style: .default)
-                                let message = "Name: \(data.name)\nIP address: \(data.ipAddress!)"
+                                let message = "Name: \(data.name) IP address: \(data.ipAddress ?? "nil")"
                                 self.displayAlert(with: title , message: message, actions: [action])
                             }
                         }
