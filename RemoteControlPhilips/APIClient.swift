@@ -13,7 +13,7 @@ struct APIClient {
     var ipAddress: String
     
     private lazy var baseURL: URL = {
-        let URLString = "https://\(self.ipAddress):1925"
+        let URLString = "http://\(self.ipAddress):1925"
         return URL(string: URLString)!
     }()
     

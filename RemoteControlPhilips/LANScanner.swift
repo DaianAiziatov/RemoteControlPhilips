@@ -13,6 +13,7 @@ class LANScanner: NSObject {
     @objc dynamic var isScanRunning : BooleanLiteralType = false
     private var myContext = 0
     private var connectedDevices = [MMDevice]()
+    private var checkedDevicesCount = 0
     
     private var client: APIClient!
     private var tvInfo: SystemInfo?
@@ -36,21 +37,19 @@ class LANScanner: NSObject {
     
     private func tryConnectedDevices() {
         for index in 0..<connectedDevices.count {
-            if index == (connectedDevices.count - 1) {
-                tryHost(with: connectedDevices[index].ipAddress, isLast: true)
-            } else {
-                tryHost(with: connectedDevices[index].ipAddress, isLast: false)
-            }
+           tryHost(with: connectedDevices[index].ipAddress)
         }
     }
     
-    private func tryHost(with ipAddress: String, isLast: Bool) {
+    private func tryHost(with ipAddress: String) {
         client = APIClient(ipAddress: ipAddress)
         client.fetchingSystemInfo() { result in
             switch result {
             case .failure(let error):
+                self.checkedDevicesCount += 1
                 print(error.reason)
-                if isLast {
+                if self.checkedDevicesCount == self.connectedDevices.count {
+                    self.checkedDevicesCount = 0
                     self.isScanRunning = false
                     print("Process is complited")
                 }
@@ -72,7 +71,7 @@ extension LANScanner: MMLANScannerDelegate {
         if(!self.connectedDevices.contains(device)) {
             self.connectedDevices.append(device)
         }
-
+        print(device.ipAddress)
     }
     
     func lanScanDidFinishScanning(with status: MMLanScannerStatus) {

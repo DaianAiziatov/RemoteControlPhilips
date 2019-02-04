@@ -15,7 +15,7 @@ class ViewController: UIViewController, AlertDisplayable {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.scanner.addObserver(self, forKeyPath: "isScanRunning", options: .new, context:&myContext)
+        self.scanner.addObserver(self, forKeyPath: "isScanRunning", options: .new, context: &myContext)
     }
     
     @IBAction func scanTapped(_ sender: UIButton) {
@@ -35,14 +35,18 @@ class ViewController: UIViewController, AlertDisplayable {
                     self.scanner.getResultOfScanning() { result in
                         switch result {
                         case .failure(let error):
-                            let title = "Warning"
-                            let action = UIAlertAction(title: "Ok", style: .default)
-                            self.displayAlert(with: title , message: error.reason, actions: [action])
+                            DispatchQueue.main.async {
+                                let title = "Warning"
+                                let action = UIAlertAction(title: "Ok", style: .default)
+                                self.displayAlert(with: title , message: error.reason, actions: [action])
+                            }
                         case .success(let data):
-                            let title = "Success"
-                            let action = UIAlertAction(title: "Ok", style: .default)
-                            let message = "Name: \(data.name)\nIP address: \(data.ipAddress!)"
-                            self.displayAlert(with: title , message: message, actions: [action])
+                            DispatchQueue.main.async {
+                                let title = "Success"
+                                let action = UIAlertAction(title: "Ok", style: .default)
+                                let message = "Name: \(data.name)\nIP address: \(data.ipAddress!)"
+                                self.displayAlert(with: title , message: message, actions: [action])
+                            }
                         }
                     }
                     
